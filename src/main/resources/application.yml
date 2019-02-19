@@ -1,0 +1,46 @@
+logging:
+  level:
+    ROOT: INFO
+    br.com.cactusdigital.erp.register: DEBUG
+
+spring:          
+  jackson:
+    date-format: yyyy-MM-dd
+    deserialization:
+      accept-empty-string-as-null-object: true
+      fail-on-unknown-properties: false
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: cactus_register
+    password: JesusCristo
+    hikari:
+      minimum-idle: 5
+      # NUMERO MAXIMO DO POOL DE CONEXAO
+      maximum-pool-size: 100
+      idle-timeout: 60000
+      pool-name: modelagemCP
+      # CONFIGURANDO PARA 60 SEG
+      connection-timeout: 120000
+      max-lifetime: 2000000
+      data-source-properties:
+        cache-prep-stmts: true
+        prep-stmp-cache-size: 250
+        prep-stmt-cache-sql-limit: 2048
+        use-server-prep-stmts: true
+
+liquibase:
+  change-log: classpath:db/liquibase-changelog.xml  
+  enabled: true
+
+server:
+  port: 8010
+
+mybatis:
+  configuration:
+    jdbc-type-for-null: VARCHAR
+    map-underscore-to-camel-case: true
+  type-aliases-package: br.com.cactusdigital.erp.register.domain, br.com.cactusdigital.erp.register.service.dto
+  mapper-locations:
+  - classpath*:mybatis/mapper/*.xml

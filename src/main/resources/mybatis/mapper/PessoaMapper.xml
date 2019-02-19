@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="br.com.cactusdigital.erp.register.repository.PessoaRepository">
+
+	<insert id="save" parameterType="Pessoa" timeout="10" useGeneratedKeys="true" keyColumn="codigo" keyProperty="codigo">
+		
+		<selectKey keyProperty="codigo" resultType="Long" order="BEFORE">
+			SELECT NEXTVAL('SEQ_PESSOA');
+		</selectKey>
+		
+		INSERT INTO TB_PESSOA(
+			CODIGO,
+			NOME, 
+			TIPO_PESSOA, 
+			EMAIL, 
+			SITE, 
+			CLIENTE, 
+			FORNECEDOR, 
+			COLABORADOR, 
+			TRANSPORTADORA)
+		VALUES(
+			#{codigo},
+			#{nome},
+			#{tipoPessoa},
+			#{email},
+			#{site},
+			#{cliente},
+			#{fornecedor},
+			#{colaborador},
+			#{transportadora})
+	</insert>
+
+    <select id="findPessoaById" resultMap="pessoaMap" parameterType="map">
+    	SELECT 
+    		PESSOA.CODIGO,
+    		PESSOA.NOME,
+    		PESSOA.TIPO_PESSOA,
+    		PESSOA.EMAIL,
+    		PESSOA.SITE,
+    		PESSOA.CLIENTE,
+    		PESSOA.FORNECEDOR,
+    		PESSOA.COLABORADOR,
+    		PESSOA.TRANSPORTADORA
+    	FROM
+    		TB_PESSOA AS PESSOA
+    	WHERE 
+    		PESSOA.CODIGO = #{codigoPessoa}
+    </select>
+
+    <resultMap id="pessoaMap" type="br.com.cactusdigital.erp.register.service.dto.PessoaDTO">
+        <result column="CODIGO" property="codigo" />
+        <result column="NOME" property="nome" />
+        <result column="TIPO_PESSOA" property="tipoPessoa" />
+        <result column="EMAIL" property="email" />
+        <result column="SITE" property="site" />
+        <result column="CLIENTE" property="cliente" />        
+        <result column="FORNECEDOR" property="fornecedor" />
+        <result column="COLABORADOR" property="colaborador" />
+        <result column="TRANSPORTADORA" property="transportadora" />        
+    </resultMap>
+    
+</mapper>
